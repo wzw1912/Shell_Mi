@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.se.mapper.ConfigMapper">
+
+
+<!-- 	<resultMap type="com.se.entity.ConfigEntity" id="configInfoMap">
+	        <result column="id" property="id"/>
+	        <result column="isOn" property="isOn"/>
+	        <result column="data" property="data"/>
+	</resultMap> -->
+	   
+	<select id="idIsExists" resultType="Integer" parameterType="string">
+		select count(id) from shell_app_config where id=#{id}
+	</select>
+
+	<select id="ipIsExists" resultType="Integer" parameterType="string">
+		select count(ip) from shell_app_ips where ip=#{ip}
+	</select>
+	
+	<select id="selectConfigData" resultType="com.se.entity.ConfigEntity" parameterType="string">
+		select * from shell_app_config where id=#{idStr}
+    </select>
+    
+    <insert id="saveIdData" parameterType="com.se.entity.ConfigEntity">
+	    <selectKey keyProperty="id" order="AFTER" resultType="string">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+		insert into shell_app_config values(#{id}, #{on_off}, #{data})
+	</insert>
+    
+</mapper>

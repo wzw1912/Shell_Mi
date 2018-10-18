@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.se.mapper.IpMapper">
+
+<!-- 
+	<resultMap type="com.se.entity.IpEntity" id="ipInfoMap">
+	        <result column="id" property="id"/>
+	        <result column="isOn" property="isOn"/>
+	        <result column="data" property="data"/>
+	</resultMap> -->
+	
+	   
+	<select id="ipIsExists" resultType="Integer" parameterType="string">
+		select count(*) from shell_app_ips where ip=#{ip};
+	</select>
+	
+	<select id="selectIdByIp" resultType="String" parameterType="string"> 
+		select id from shell_app_ips where ip=#{ip}
+	</select>
+	
+	<insert id="saveIpData" parameterType="com.se.entity.IpEntity">
+	    <selectKey keyProperty="id" order="AFTER" resultType="string">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+		insert into shell_app_ips values(#{ip}, #{id}, #{time});
+	</insert>
+	
+	<select id="selectIpEnti" parameterType="string" resultType="com.se.entity.IpEntity">
+		select * from shell_app_ips where ip=#{ip}
+	</select>
+	
+</mapper>
